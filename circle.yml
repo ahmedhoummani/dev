@@ -7,9 +7,14 @@ general:
      - $CIRCLE_TEST_REPORTS
      - target
      
-test:
+#test:
+ # override:
+  #  - mvn clean install
+  #post:
+   # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    #- find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    
+    test:
   override:
-    - mvn clean install
-  post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - php ./app/run-server.php --daemon
+    - php ./test-suite/run.php --unit-tests
